@@ -110,6 +110,8 @@ If the file was downloaded using the PWRTelegram API than you can use the follow
 
 <p>This way you will be able to safely share the download URL without exposing your bot's token.  </p>
 
+<p>You can also trigger the caching of files already present on the telegram servers to the anonymous PWRTelegram storage server by downloading the file from the following URL: <code>https://api.pwrtelegram.xyz/file/bot&lt;token&gt;/&lt;file_path&gt;</code>. The next time you can download files directly from the anonymous URL.  </p>
+
 <ul>
 <li>sendDocument, sendPhoto, sendVideo, sendAudio, sendVoice, sendSticker requests.<br>
 </li>
@@ -296,7 +298,7 @@ On success, if the message is deleted by the bot, a json array is returned with 
 <h2>
 <a id="known-bugs" class="anchor" href="#known-bugs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known bugs</h2>
 
-<p>This API cannot download video and voice files. This is a bug of tg-cli.<br>
+<p>This API cannot download video and voice files bigger than 20 mb. This is a bug of tg-cli.<br>
 The metadata recognition feature works only with files smaller than 40 mb.  </p>
 
 <p>For questions contact <a href="https://telegram.me/danogentili">https://telegram.me/danogentili</a> or the <a href="https://telegram.me/pwrtelegramgroup">official support group</a>.</p>

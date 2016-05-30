@@ -43,6 +43,8 @@ Licensed under AGPLv3.  </p>
 <li><a href="https://github.com/pwrtelegram/telegram-lua-load">telegram-lua-load</a></li>
 </ul>
 
+<p>This API is written and maintained by <a href="https://github.com/danog" class="user-mention">@danog</a> (<a href="https://telegram.me/danogentili">@danogentili on telegram</a>) with the help of the folks over <a href="https://telegram.me/BotDevelopment">@BotDevelopment</a>, especially <a href="https://github.com/itskenny0" class="user-mention">@itskenny0</a> (<a href="https://telegram.me/shitposting">@shitposting on telegram</a>).  </p>
+
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h2>
 
@@ -122,9 +124,9 @@ You can use the following anonymous url to download the file: <code>https://stor
 
 <p>The same will happen if you send a file ID that links to a file which type is different from the one specified in the URL or if you also provide a file name along with the file ID.</p>
 
-<p>You can provide a detect parameter: if the value of this parameter is set to true, the PWRTelegram API will automagically obtain the metadata of the provided file/URL and send it along with the file itself (only if it isn't already present in the request).</p>
+<p>The PWRTelegram API will automagically obtain the metadata of the provided file/URL and send it along with the file itself (only if it isn't already present in the request).</p>
 
-<p>This is the metadata that will be obtained and sent if the detect parameter is set to true: </p>
+<p>This is the metadata that will be obtained and sent: </p>
 
 <ul>
 <li><p>Documents: file name as caption</p></li>
@@ -142,7 +144,7 @@ You can use the following anonymous url to download the file: <code>https://stor
 
 <p>Use this method to send any file/URL/file ID. This method will automagically recognize the type of file/URL uploaded and send it using the correct telegram method. It will also automagically read file metadata and attach it to the request (only if it isn't already provided in the request). On success, the sent Message is returned.</p>
 
-<p>This is the metadata that will be obtained and sent (only if it isn't already provided in the request) along with the file:</p>
+<p>This is the metadata that will be obtained and sent (only if not present in the request) along with the file:</p>
 
 <ul>
 <li><p>Documents: file name as caption</p></li>
@@ -244,6 +246,30 @@ You can use the following anonymous url to download the file: <code>https://stor
 </table>
 
 <ul>
+<li>uploadFile, uploadDocument, uploadAudio, uploadVideo, uploadVoice, uploadPhoto, uploadSticker</li>
+</ul>
+
+<p>These methods can be used to upload files to telegram without sending them to a particular user. Their usage is exactly the same as for their sendMethod counterparts, except that the chat_id, disable_notification, reply_to_message_id, reply_markup parameters will be ignored.  </p>
+
+<p>On success, they will return a json array containing the following elements:</p>
+
+<ul>
+<li><p>ok =&gt; true</p></li>
+<li>
+<p>result =&gt;</p>
+
+<ul>
+<li><p>file_id =&gt; Uploaded file id</p></li>
+<li><p>file_type =&gt; Uploaded file type</p></li>
+<li><p>file_size =&gt; Uploaded file size</p></li>
+<li><p>file_id =&gt; Optional caption of uploaded file id (to send when calling a send method).</p></li>
+</ul>
+</li>
+</ul>
+
+<p>Otherwise the error is returned.</p>
+
+<ul>
 <li>deleteMessage</li>
 </ul>
 
@@ -298,7 +324,7 @@ On success, if the message is deleted by the bot, a json array is returned with 
 <a id="known-bugs" class="anchor" href="#known-bugs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known bugs</h2>
 
 <p>This API cannot download video and voice files bigger than 20 mb. This is a bug of tg-cli.<br>
-The metadata recognition feature works only with files smaller than 40 mb.  </p>
+The metadata recognition feature works only with files smaller than 50 mb.  </p>
 
 <p>For questions contact <a href="https://telegram.me/danogentili">https://telegram.me/danogentili</a> or the <a href="https://telegram.me/pwrtelegramgroup">official support group</a>.</p>
 

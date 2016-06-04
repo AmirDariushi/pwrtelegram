@@ -45,6 +45,8 @@ Licensed under AGPLv3.  </p>
 
 <p>This API is written and maintained by <a href="https://github.com/danog" class="user-mention">@danog</a> (<a href="https://telegram.me/danogentili">@danogentili on telegram</a>) with the help of the folks over <a href="https://telegram.me/BotDevelopment">@BotDevelopment</a>, especially <a href="https://github.com/itskenny0" class="user-mention">@itskenny0</a> (<a href="https://telegram.me/shitposting">@shitposting on telegram</a>).  </p>
 
+<p>It is hosted by <a href="http://baum.xyz">the awesome Bothosting</a>.</p>
+
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h2>
 
@@ -53,8 +55,7 @@ Licensed under AGPLv3.  </p>
 </li>
 <li>Downloading of files up to 1.5 GB in size<br>
 </li>
-<li>Anonymous file storage (the URL of downloaded files does not contain your bot's token)<br>
-</li>
+<li>Anonymous file storage (the URL of downloaded files does not contain your bot's token)</li>
 <li>Uploading of files up to 1.5 GB in size<br>
 </li>
 <li>Uploading of files using an URL</li>
@@ -67,6 +68,14 @@ Licensed under AGPLv3.  </p>
 </li>
 <li>Deleting of text messages sent from the bot<br>
 </li>
+<li>Uploading of files bigger than 5 megabytes with inline queries (supports both URLs and direct uploads)</li>
+<li>Automatical type recognition for files sent using answerinlinequery </li>
+<li>Both webhooks and getupdates are supported.</li>
+<li>webhook requests can be recieved even on insecure http servers.</li>
+<li>
+<a href="https://github.com/pwrtelegram">It is open source</a>!</li>
+<li>
+<a href="https://github.com/pwrtelegram/pwrtelegram-backend">It can be installed on your own server</a>!</li>
 <li>
 <a href="https://telegram.me/pwrtelegramgroup">You tell me!</a><br>
 </li>
@@ -82,7 +91,18 @@ Licensed under AGPLv3.  </p>
 <pre><code>sed -i 's/api\.telegram\.org/api\.pwrtelegram\.xyz/g' client.py
 </code></pre>
 
+<p>The client can be written in any language, not necessarily python.</p>
+
+<p>Or you can manually substitute <code>api.telegram.org</code> with <code>api.pwrtelegram.xyz</code> in your bot,</p>
+
+<p>If you use webhooks you must recall the setwebhook method.  </p>
+
 <p>The API will automagically do the rest :)  </p>
+
+<p>Also please insert the following text in the response to the /start command:  </p>
+
+<pre><code>This bot makes use of the @pwrtelegram bot API to enhance its features.
+</code></pre>
 
 <h2>
 <a id="how-do-i-use-it" class="anchor" href="#how-do-i-use-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How do I use it?</h2>
@@ -92,8 +112,8 @@ Licensed under AGPLv3.  </p>
 <ul>
 <li><p>Please do not abuse of the API by uploading and/or downloading illegal or copyrighted material. The pwrtelegram API creator reserves the right to delete any illegal or copyrighted material that is found on his servers.  </p></li>
 <li><p>The PWRTelegram API does not store in any way your bot's token but it does store the bot's username, the sha256 sum of uploaded files and the file ID and the size of uploaded and downloaded files.</p></li>
-<li><p>The PWRTelegram API proxies all requests sent to it to api.telegram.org (later will be called official telegram API), except for:</p></li>
-<li><p>getUpdates requests.</p></li>
+<li><p>The methods used by the PWRTelegram API are the same ones used in the official telegram bot API, but they also have some additional features and in certain cases their behaviour is slightly modified (don't worry, that won't break your clients). There are also some methods that work only with the PWRTelegram API. Here's a list:</p></li>
+<li><p>getUpdates and webhook requests.</p></li>
 </ul>
 
 <p>The response of these requests will be passed trough a piece of code that will filter out messages from @pwrtelegramapi.</p>
@@ -317,20 +337,50 @@ On success, if the message is deleted by the bot, a json array is returned with 
 </table>
 
 <ul>
-<li><p>Do not send more than 50 different files (as in files with different sha256sums) without processing updates. Once reached this limit, files will not be sent if there's an unprocessed message from a user that isn't @pwrtelegramapi in front of the message queue.  </p></li>
-<li><p>For now the only supported message update method is getUpdates.  </p></li>
-<li><p>Please note that this API is still in beta and there might be small bugs. To report them contact <a href="https://telegram.me/danogentili">Daniil Gentili</a>.  </p></li>
+<li><p>Do not send more than 50 different files (as in files with different sha256sums) without processing updates. Once reached this limit, files will not be sent if there's an unprocessed message from a user that isn't @pwrtelegramapi in front of the message queue (this limitation is only present if you use getupdates).  </p></li>
+<li><p>You can use both getupdates and webhooks to get updates</p></li>
+</ul>
+
+<p>Only remember that you will have to repeat the setwebhook request to enable proxying trough the PWRTelegram API.</p>
+
+<ul>
+<li>answerInlineQuery</li>
+</ul>
+
+<p>The usage if this method is exactly the same as in the official telegram bot api, except that you can provide URLs to files bigger than 5 megabytes and you can set the file type to <code>file</code> to enable automatical type and metadata recognition.</p>
+
+<p>You can also upload files using via POST: you just have to upload the files with parameter name equal to <code>inline_file0</code> where 0 is the number of the file. The number has to be equal to the array index of the InlineQueryResult that will feature that file. The type_url field of that InlineQueryResult must also be empty.</p>
+
+<p>Please note that it's better to upload the big files using the upload methods and store the file ids instead of uploading them directly using the answerInlineQuery method.  </p>
+
+<ul>
+<li>Please note that this API is still in beta and there might be small bugs. To report them contact <a href="https://telegram.me/danogentili">Daniil Gentili</a> or <a href="https://github.com/pwrtelegram/pwrtelegram/issues">open an issue</a> or <a href="https://github.com/pwrtelegram/pwrtelegram">submit a pull request with a fix</a> or write to <a href="https://telegram.me/pwrtelegramgroup">@pwrtelegramgroup</a>.<br>
+</li>
 </ul>
 
 <h2>
 <a id="known-bugs" class="anchor" href="#known-bugs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known bugs</h2>
 
-<p>This API cannot download video and voice files bigger than 20 mb. This is a bug of tg-cli.<br>
-The metadata recognition feature works only with files smaller than 50 mb.  </p>
+<p>See the issues of the repos of the <a href="https://github.com/pwrtelegram">pwrtelegram organization</a>.</p>
+
+<h2>
+<a id="how-can-i-help" class="anchor" href="#how-can-i-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How can I help?</h2>
+
+<p>You can help by doing one or more of the following things:</p>
+
+<ul>
+<li>Proofreading this documentation and sending a message to the <a href="https://telegram.me/pwrtelegramgroup">official support group</a> if you have some corrections.</li>
+<li>Peer reviewing the source code of this API and reporting bugs by contacting <a href="https://telegram.me/danogentili">Daniil Gentili</a> or <a href="https://github.com/pwrtelegram/pwrtelegram/issues">opening an issue</a> or <a href="https://github.com/pwrtelegram/pwrtelegram">submitting a pull request with a fix</a> or writing to <a href="https://telegram.me/pwrtelegramgroup">@pwrtelegramgroup</a>.<br>
+</li>
+<li>Starring the <a href="https://github.com/pwrtelegram">repositories of the project</a> and sharing it around with your friends :)</li>
+</ul>
+
+<h2>
+<a id="more-info" class="anchor" href="#more-info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>More info</h2>
 
 <p>For questions contact <a href="https://telegram.me/danogentili">https://telegram.me/danogentili</a> or the <a href="https://telegram.me/pwrtelegramgroup">official support group</a>.</p>
 
-<p>Share this API and its offical channel (<a href="https://telegram.me/pwrtelegram">https://telegram.me/pwrtelegram</a>) with all of your friends! :) </p>
+<p>Share this API and its official channel (<a href="https://telegram.me/pwrtelegram">https://telegram.me/pwrtelegram</a>) with all of your friends! :) </p>
 
 <p>Feel free to contribute with pull Requests.  </p>
 

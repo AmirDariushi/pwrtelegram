@@ -137,6 +137,16 @@ You can use the following anonymous url to download the file: <code>https://stor
 
 <p>You can also trigger the caching of files already present on the telegram servers to the anonymous PWRTelegram storage server by downloading the file from the following URL: <code>https://api.pwrtelegram.xyz/file/bot&lt;token&gt;/&lt;file_path&gt;</code>. The next time you can download files directly from the anonymous URL.  </p>
 
+<p>If your request times out and you try to redownload the file you will be returned a json array with the following values:</p>
+
+<ul>
+<li><p>ok =&gt; true</p></li>
+<li><p>error_code =&gt; 202</p></li>
+<li><p>description =&gt; Your file is being downloaded. Please try again later.</p></li>
+</ul>
+
+<p>You can repeat the request until you get the File object.  </p>
+
 <ul>
 <li>sendDocument, sendPhoto, sendVideo, sendAudio, sendVoice, sendSticker requests.<br>
 </li>

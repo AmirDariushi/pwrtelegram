@@ -68,12 +68,13 @@ Licensed under AGPLv3.  </p>
 </li>
 <li>Automagical metadata recognition of sent files/URLs/file IDs.<br>
 </li>
-<li>Deleting of text messages sent from the bot<br>
+<li>Deleting of text messages sent from the bot.<br>
 </li>
 <li>Uploading of files bigger than 5 megabytes with inline queries (supports both URLs and direct uploads)</li>
 <li>Automatical type recognition for files sent using answerinlinequery </li>
 <li>Both webhooks and getupdates are supported.</li>
 <li>webhook requests can be recieved even on insecure http servers.</li>
+<li>Resolving of usernames not only with channels and groups but also with normal users and bots.</li>
 <li>
 <a href="https://github.com/pwrtelegram">It is open source</a>!</li>
 <li>
@@ -116,6 +117,7 @@ Licensed under AGPLv3.  </p>
 <li><p>The PWRTelegram API does not store in any way your bot's token but it does store the bot's username, the sha256 sum of uploaded files and the file ID and the size of uploaded and downloaded files.</p></li>
 <li><p>This API won't be able to send big files if getUpdate or webhook requests aren't proxied through it. This is because when the API uploads these files using tg-cli it must obtain a file_id using the official bot API, and that can be done only by intercepting the incoming update with the file.</p></li>
 <li><p>The methods used by the PWRTelegram API are the same ones used in the official telegram bot API, but they also have some additional features and in certain cases their behaviour is slightly modified (don't worry, that won't break your clients). There are also some methods that work only with the PWRTelegram API. Here's a list:</p></li>
+<li><p>With this API you can use usernames to interact even with normal users and you can get info about bots using their username (with the getChat method).  </p></li>
 <li><p>getUpdates and webhook requests.</p></li>
 </ul>
 
@@ -203,7 +205,7 @@ You can use the following anonymous url to download the file: <code>https://stor
 <td>chat_id</td>
 <td>Integer or String</td>
 <td>Yes</td>
-<td>Unique identifier for the target chat or username of the target channel (in the format @channelusername)</td>
+<td>Unique identifier for the target chat or username of the target channel, group or user (in the format @username)</td>
 </tr>
 <tr>
 <td>message_id</td>
@@ -332,7 +334,7 @@ On success, if the message is deleted by the bot, a json array is returned with 
 <td>chat_id</td>
 <td>Integer or String</td>
 <td>No (see description)</td>
-<td>Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)</td>
+<td>Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel, group or user (in the format @username)</td>
 </tr>
 <tr>
 <td>message_id</td>
